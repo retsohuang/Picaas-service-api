@@ -1,0 +1,927 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PicaaS API Documentation</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/monokai-sublime.min.css"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <script>
+        hljs.configure({
+            tabReplace: '    ',
+        });
+        hljs.initHighlightingOnLoad();
+    </script>
+    <style>
+        body {
+            position: relative;
+        }
+
+        h1 {
+            margin-top: 5px;
+        }
+
+        h1,
+        h2,
+        h2,
+        h4 {
+            color: #2b2b2b;
+        }
+
+        h2:after {
+            content: ' ';
+        }
+
+        h5 {
+            font-weight: bold;
+        }
+
+        h1 a,
+        h2 a,
+        h2 a,
+        h4 a,
+        h5 a,
+        h6 a {
+            display: none;
+            position: absolute;
+            margin-left: 8px;
+        }
+
+        h1:hover a,
+        h2:hover a,
+        h2:hover a,
+        h4:hover a,
+        h5:hover a,
+        h6:hover a {
+            color: #a5a5a5;
+            display: initial;
+        }
+
+        hr {
+            margin-bottom: 20px
+        }
+
+        .nav.nav-tabs>li>a {
+            padding-top: 4px;
+            padding-bottom: 4px;
+        }
+
+        .tab-content {
+            padding-top: 8px;
+        }
+
+        .table {
+            margin-bottom: 8px;
+        }
+
+        pre {
+            border-radius: 0px;
+            border: none;
+        }
+
+        pre code {
+            margin: -9.5px;
+        }
+
+        .request {
+            margin-top: 12px;
+            margin-bottom: 24px;
+        }
+
+        .response-text-sample {
+            padding: 0px !important;
+        }
+
+        .response-text-sample pre {
+            margin-bottom: 0px;
+        }
+
+
+        #sidebar-wrapper {
+            z-index: 1000;
+            position: fixed;
+            width: 250px;
+            height: 100%;
+            margin-left: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: #2b2b2b;
+            padding-top: 20px;
+        }
+
+        #sidebar-wrapper ul {
+            width: 250px;
+        }
+
+        #sidebar-wrapper ul li {
+            margin-right: 10px;
+        }
+
+        #sidebar-wrapper ul li a:hover {
+            background: inherit;
+            text-decoration: none;
+        }
+
+        #sidebar-wrapper ul li a {
+            display: block;
+            color: #ECF0F1;
+            padding: 6px 15px;
+        }
+
+        #sidebar-wrapper ul li ul {
+            padding-left: 25px;
+        }
+
+        #sidebar-wrapper ul li ul li a {
+            padding: 1px 0px;
+        }
+
+        #sidebar-wrapper ul li a:hover,
+        #sidebar-wrapper ul li a:focus {
+            color: #e0c46c;
+            border-right: solid 1px #e0c46c;
+        }
+
+        #sidebar-wrapper ul li.active>a {
+            color: #e0c46c;
+            border-right: solid 3px #e0c46c;
+        }
+
+        /* #sidebar-wrapper ul li:not(.active) ul {
+            display: none;
+        } */
+
+        #page-content-wrapper {
+            width: 100%;
+            position: absolute;
+            padding: 15px 0px 15px 250px;
+        }
+    </style>
+</head>
+
+<body data-spy="scroll" data-target=".scrollspy">
+
+    <div id="sidebar-wrapper">
+        <div class="scrollspy">
+            <ul id="main-menu" data-spy="affix" class="nav">
+                <li> <a href="#doc-general-notes">Quick Start</a> </li>
+                <li>
+                    <a href="#doc-api-detail">API detail</a>
+                    <ul>
+                        <li> <a href="#request-authentication">Authentication</a> </li>
+                        <li> <a href="#request-create-image-batch-job">Create Image Batch Job</a> </li>
+                        <li> <a href="#request-get-image-batch-job-status">Get Image Batch Job Status</a> </li>
+                        <li> <a href="#request-get-image-batch-job">Get Image Batch Job</a></li>
+                    </ul>
+                </li>
+                <li> <a href="#error-code">Error Code</a> </li>
+                <li> <a href="#system-limitation">Sysyem Limitation</a> </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-8 col-md-12">
+                    <h1 style="color:#6254d2;">PicaaS API Documentation</h1>
+                    <p>
+                        PicaaS is an online service using Deep-Learning-Based AI technologies to fix photos in
+                        compliance with
+                        image requirements
+                        of Google Shopping Ads.
+                    </p>
+                    <p>
+                        Check offical web site ( <a href="https://picaas.io">https://picaas.io</a> ) to get more
+                        informatoin about PicaaS
+                    </p>
+                    <h2 id="doc-general-notes">
+                        Quick Start
+                        <a href="#doc-general-notes"><i class="glyphicon glyphicon-link"></i></a>
+                    </h2>
+
+                    <p>To get started, you should have <code>client_id</code> and <code>client_secret</code> for your
+                        service. If you haven’t had, please contact us to create for you.</p>
+                    <p>You have to use <code>client_id</code> and <code>client_secret</code> to get an application
+                        token. and place token at every API request header for authentication.</p>
+
+                    <p>
+                        If you want to use <a href="https://www.getpostman.com/downloads/" target="_blank">Postman</a>
+                        to test PicaaS
+                        API.
+                        We proived a <a
+                            href="https://drive.google.com/uc?export=download&id=1vD4km52E0mC_aMkxXHr9nsJcxzS_nLDR">PicaaS
+                            API collection</a> for you to speed up test.
+                        Don't
+                        forget <a
+                            href="https://learning.getpostman.com/docs/postman/environments_and_globals/manage_environments/"
+                            target="_blank">
+                            create an empty environment</a>. Because our collection will use it.
+                    </p>
+
+                    <hr>
+
+                    <h2 id="doc-api-detail">
+                        API detail
+                        <a href="#doc-api-detail"><i class="glyphicon glyphicon-link"></i></a>
+                    </h2>
+
+                    <div class="request">
+
+                        <h2 id="request-authentication">
+                            Authentication
+                            <a href="#request-authentication"><i class="glyphicon glyphicon-link"></i></a>
+                        </h2>
+
+                        <div>
+                            <p>Create application token for authentication. The token is used in the following APIs and
+                                put in BEARER header. Use <code>client_id</code> and <code>client_secret</code> provided
+                                by us.</p>
+                        </div>
+
+                        <div>
+
+                            <h3>Endpoint</h3>
+                            <pre><code class="shell">POST https://app.straas.net/api/v1/app/token</code></pre>
+                            <h3>Parameters</h3>
+                            <table class="table table-bordered">
+
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>client_id</th>
+                                        <td>Application client id.</td>
+                                        <td>String</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>client_secret</th>
+                                        <td>Application client secret.</td>
+                                        <td>String</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+
+                            <h3>Request</h3>
+                            <h4>Route</h4>
+                            <pre><code class="shell">POST https://app.straas.net/api/v1/app/token</code></pre>
+                            <h4>Headers</h4>
+                            <pre><code>Content-Type: application/json</code></pre>
+                            <h4>Body</h4>
+                            <pre><code>{
+    "client_id": "&lt;INPUT_YOUR_CLIENT_ID_HERE&gt;",
+    "client_secret": "&lt;INPUT_YOUR_CLIENT_SECRET_HERE&gt;"
+}</code></pre>
+
+                            <h3>Response</h3>
+                            <h4>Response Fields</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>account_id</th>
+                                        <td>The id of the account which the resource belongs to.</td>
+                                        <td>String</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>token</th>
+                                        <td>JSON Web Token. A app token can be alive in 24 hours. After it is expired or
+                                            invalid, you have to get a new one.</td>
+                                        <td>String</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <h4>Status</h4>
+                            <pre><code>201 Created</code></pre>
+                            <h4>Body</h4>
+                            <pre><code class="json">{
+    "token": "&lt;APP_TOKEN&gt;",
+    "account_id": "picaas.io-test"
+}</code></pre>
+
+                        </div>
+
+                    </div>
+                    <hr>
+
+
+                    <div class="request">
+
+                        <h2 id="request-create-image-batch-job">
+                            Create Image Batch Job
+                            <a href="#request-create-image-batch-job"><i class="glyphicon glyphicon-link"></i></a>
+                        </h2>
+
+                        <div>
+                            <p>Create image batch jobs. There are three types of image batch job.
+                                <ul>
+                                    <li><b>pre_validation: </b>Judge the image is legal or illegal. Use it when image
+                                        wan't legalized by PicaaS.</li>
+                                    <li><b>post_validation: </b>Judge the image is legal or illegal. Use it when image
+                                        was legalized by PicaaS at least once.
+                                    </li>
+                                    <li><b>legalization: </b>PicaaS will make images legal by editing image
+                                        automatically.
+                                    </li>
+                                </ul>
+
+                            </p>
+                        </div>
+
+                        <div>
+
+                            <h3>Endpoint</h3>
+                            <pre><code class="shell">POST https://app.picaas.io/v1/image_legalization_pipelines</code></pre>
+
+                            <h3>Parameters</h3>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>model_type</th>
+                                        <td>The model type includes { legalization | validation }.</td>
+                                        <td>String</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>input_csv</th>
+                                        <td>Base64 encode CSV flie.</td>
+                                        <td>String</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <h3>Format of <code>input_csv</code></h3>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>custom_id</th>
+                                        <td>Custom id that you can manage.</td>
+                                        <td>String</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>url</th>
+                                        <td>The url of image you want to submit.</td>
+                                        <td>String</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>
+                                You don't have to add header of CSV. Just fill in the custiom_id and url in order. Check
+                                example below.
+                                <pre><code">ID001, https://imgur.com/mZ7AjDP.jpg
+ID002, https://imgur.com/pfTZazm.jpg</code></pre>
+                            </p>
+                            <p>
+                                Remember to convert CSV to base64 before submit. You can test with <a
+                                    href="https://onlinecsvtools.com/convert-csv-to-base64" target="_blank">CSV to
+                                    base64 converter</a>. The example below is encoded base 64 string from CSV.
+
+                                <pre><code">SUQwMDEsIGh0dHBzOi8vaW1ndXIuY29tL21aN0FqRFAuanBnCklEMDAyLCBodHRwczovL2ltZ3VyLmNvbS9wZlRaYXptLmpwZw==</code></pre>
+                            </p>
+
+                            <h3>Request</h3>
+                            <h4>Route</h4>
+                            <pre><code class="shell">POST https://app.picaas.io/v1/image_legalization_pipelines</code></pre>
+                            <h4>Headers</h4>
+                            <pre><code>Authorization: Bearer &lt;APP_TOKEN&gt;
+Content-Type: application/json</code></pre>
+                            <h4>Body</h4>
+
+                            <pre><code>{
+    "model_type":"legalization",
+    "input_csv":"MSxodHRwczovL2ltZ3VyLmNvbS9tWjdBakRQLmpwZwoyLGh0dHBzOi8vaW1ndXIuY29tL3BmVFphem0uanBn"
+}</code></pre>
+
+                            <h3>Response</h3>
+                            <h4>Response Fields</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>task[status_url] </th>
+                                        <td>use the url to query image batch job status.</td>
+                                        <td>String</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>task[id]</th>
+                                        <td>The id of the batch job.</td>
+                                        <td>String</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <h4>Status</h4>
+                            <pre><code>202 Accepted</code></pre>
+
+                            <h4>Body</h4>
+                            <pre><code class="json">{
+    "task": {
+        "status_url": "/image_legalization_pipelines/5566/status",
+        "id": 5566
+    }
+}</code></pre>
+                        </div>
+
+                        <hr>
+
+                        <div class="request">
+
+                            <h2 id="request-get-image-batch-job-status">
+                                Get Image Batch Job Status
+                                <a href="#request-get-image-batch-job-status"><i
+                                        class="glyphicon glyphicon-link"></i></a>
+                            </h2>
+
+                            <div>
+                                <p>Check the current status of image batch job.
+                                </p>
+                            </div>
+
+                            <div>
+                                <h3>Endpoint</h3>
+                                <pre><code class="shell">GET https://app.picaas.io/v1/image_legalization_pipelines/:id/status</code></pre>
+
+                                <h3>Parameters</h3>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>id</th>
+                                            <td>The id of the batch job.</td>
+                                            <td>Integer</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h3>Request</h3>
+                                <h4>Route</h4>
+                                <pre><code class="shell">GET https://app.picaas.io/v1/image_legalization_pipelines/5566/status</code></pre>
+                                <h4>Headers</h4>
+                                <pre><code>Authorization: Bearer &lt;APP_TOKEN&gt;
+Content-Type: application/json</code></pre>
+
+                                <h3>Response</h3>
+                                <h4>Response Fields</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>status</th>
+                                            <td>The status includes { completed | initialized | processing }.</td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>progress</th>
+                                            <td>The progress of image batch job.</td>
+                                            <td>Integer</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>total_image_count</th>
+                                            <td>The number of total images which are computed.</td>
+                                            <td>Integer</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h4>Status</h4>
+                                <pre><code>200 OK</code></pre>
+                                <h4>Body</h4>
+                                <pre><code class="json">{
+    "status": "completed",
+    "progress": 100,
+    "total_image_count": 2
+}</code></pre>
+                            </div>
+                            <hr>
+                        </div>
+
+
+                        <div class="request">
+
+                            <h2 id="request-get-image-batch-job">
+                                Get Image Batch Job
+                                <a href="#request-get-image-batch-job"><i class="glyphicon glyphicon-link"></i></a>
+                            </h2>
+
+                            <div>
+                                <p>
+                                    After the job is completed, you can get the CSV download url (i.e.
+                                    output_signed_url) by
+                                    this API. If you get the resource before the job is done, it returns 404 http status
+                                    code.
+                                </p>
+                            </div>
+
+                            <div>
+
+                                <h3>Endpoint</h3>
+                                <pre><code class="shell">GET https://app.picaas.io/v1/image_legalization_pipelines/:id</code></pre>
+
+                                <h3>Parameters</h3>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>id</th>
+                                            <td>The id of the batch job.</td>
+                                            <td>Integer</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <h3>Request</h3>
+                                <h4>Route</h4>
+                                <pre><code class="shell">GET https://app.picaas.io/v1/image_legalization_pipelines/5566</code></pre>
+                                <h4>Headers</h4>
+                                <pre><code>Authorization: Bearer &lt;APP_TOKEN&gt;
+Content-Type: application/json</code></pre>
+
+                                <h3>Response</h3>
+                                <h4>Response Fields</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>id</th>
+                                            <td>The id of the batch job.</td>
+                                            <td>Integer</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>account_id</th>
+                                            <td>The id of the account which the resource belongs to.</td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>model_type</th>
+                                            <td>The model type includes { legalization | validation }.</td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>status</th>
+                                            <td>The status includes { completed | initialized | processing }.</td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>output_signed_url</th>
+                                            <td>The url of legalization or validation result. It is CSV format.
+                                            </td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>completed_at</th>
+                                            <td>The batch job completed time.</td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>total_image_count</th>
+                                            <td>The number of total images which are computed.</td>
+                                            <td>Integer</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>succeeded_image_count</th>
+                                            <td>The number of images which are computed successfully.</td>
+                                            <td>Integer</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h4>Status</h4>
+                                <pre><code>200 OK</code></pre>
+                                <h4>Body</h4>
+                                <pre><code class="json">{
+    "id": 5566,
+    "account_id": "picaas.io-test",
+    "model_type": "legalization",
+    "status": "completed",
+    "output_signed_url": "https://storage.googleapis.com/picaas-lenna-production-as/data/picaas.io-test......",
+    "completed_at": "2019-02-12T14:00:00Z",
+    "total_image_count": 2,
+    "succeeded_image_count": 2
+}</code></pre>
+
+                                <h4>Format of <code>output_signed_url</code> Response</h4>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>id</th>
+                                            <td>The id of the image serial number of PicaaS.</td>
+                                            <td>Integer</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>custom_id</th>
+                                            <td>Custom id that your can manage.</td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>status</th>
+                                            <td>The status includes { succeeded | failed }.</td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>error_code</th>
+                                            <td>Check error code table to know what kind of error happend.</td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>model_version</th>
+                                            <td>validation model or legalization model verision.</td>
+                                            </td>
+                                            <td>String</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>output_url</th>
+                                            <td>The url of legalized image.</td>
+                                            <td>String</td>
+                                        </tr>
+                                        <tr>
+                                            <th>prediction</th>
+                                            <td>The prediction type includes { acceptable | correctable | uncorrectable
+                                                }.
+                                                <ul>
+                                                    <li> <b>acceptable: </b>the image is legal.</li>
+                                                    <li> <b>correctable: </b>The image have to be legalized.</li>
+                                                    <li> <b>uncorrectable: </b>The image have to be legalized.</li>
+                                                </ul>
+                                            </td>
+                                            <td>String</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div>
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li role="presentation" class="active">
+                                            <a href="#response-csv-legalization" data-toggle="tab">
+                                                Legalization CSV Sample
+                                            </a>
+                                        </li>
+
+                                        <li role="presentation">
+                                            <a href="#response-csv-validation" data-toggle="tab">
+                                                Validation CSV Sample
+                                            </a>
+                                        </li>
+
+                                    </ul>
+
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="response-csv-legalization">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <td class="response-text-sample" colspan="2">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>id</th>
+                                                                    <th>custom_id</th>
+                                                                    <th>status</th>
+                                                                    <th>error_code</th>
+                                                                    <th>model_version</th>
+                                                                    <th>output_url</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>5042</td>
+                                                                    <td>IMG001</td>
+                                                                    <td>succeeded</td>
+                                                                    <td>0</td>
+                                                                    <td>v0008</td>
+                                                                    <td>https://storage.googleapis.com/picaas-lenna-production-as/data/picaas.io-test/24_20190701041300/batches/24_20190701041300/targets/output_00_5042.jpg?......
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>5043</td>
+                                                                    <td>IMG002</td>
+                                                                    <td>succeeded</td>
+                                                                    <td>0</td>
+                                                                    <td>v0008</td>
+                                                                    <td>https://storage.googleapis.com/picaas-lenna-production-as/data/picaas.io-test/24_20190701041300/batches/24_20190701041300/targets/output_00_5043.jpg?......
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="tab-pane" id="response-csv-validation">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <td class="response-text-sample" colspan="2">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>id</th>
+                                                                    <th>custom_id</th>
+                                                                    <th>status</th>
+                                                                    <th>error_code</th>
+                                                                    <th>model_version</th>
+                                                                    <th>prediction</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>11</td>
+                                                                    <td>IMG001</td>
+                                                                    <td>succeeded</td>
+                                                                    <td>0</td>
+                                                                    <td>v6</td>
+                                                                    <td>correctable</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>12</td>
+                                                                    <td>IMG002</td>
+                                                                    <td>succeeded</td>
+                                                                    <td>0</td>
+                                                                    <td>v6</td>
+                                                                    <td>correctable</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <hr>
+
+                            <h2 id="error-code">
+                                Error Code
+                                <a href="#error-code"><i class="glyphicon glyphicon-link"></i></a>
+                            </h2>
+                            <p>
+                                The following table shows you the possible error responses.
+                            </p>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Error Code</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>00000001</td>
+                                        <td>PicaaS can't access your image source. Maybe 404 not
+                                            found or 401
+                                            unauthorized etc.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>00000002</td>
+                                        <td>Already reach the limit usage times of PicaaS API. contact us
+                                            to get more
+                                            api request usage.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>00000003</td>
+                                        <td>The internal error happened in PicaaS server. Please try again or contact us
+                                            to report error code.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>00000004</td>
+                                        <td>Image is too large. Every image size can’t exceed
+                                            2MB.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>00000005</td>
+                                        <td>The internal error happened in PicaaS server. Please try again or contact us
+                                            to report error code.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>00000100</td>
+                                        <td>The internal error happened in PicaaS server. Please try again or contact us
+                                            to report error code.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>00000200</td>
+                                        <td>The internal error happened in PicaaS server. Please try again or contact us
+                                            to report error code.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>00000300</td>
+                                        <td>The internal error happened in PicaaS server. Please try again or contact us
+                                            to report error code.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <hr>
+
+                            <h2 id="system-limitation">
+                                System Limitation
+                                <a href="#system-limitation"><i class="glyphicon glyphicon-link"></i></a>
+                            </h2>
+
+                            <ul>
+                                <li><b>Image files expiration date:</b> All image batch jobs will be deleted
+                                    <code>14</code> days
+                                    later when legalization was compeleted.
+                                <li><b>CSV max size:</b> It can’t exceed <code>10000</code> images per image batch job.
+                                </li>
+                                <li><b>Image max size:</b> every image size can’t exceed <code>2MB</code>.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("table:not(.table)").addClass('table table-bordered');
+            });
+        </script>
+</body>
+
+</html>
